@@ -1,0 +1,8 @@
+{
+  "validTransfer": {
+    "amount": "100"
+  },
+  "invalidTransfer": {
+    "amount": "not-a-number"
+  }
+}

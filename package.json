@@ -1,0 +1,20 @@
+{
+  "name": "parabank-automation",
+  "version": "1.0.0",
+  "description": "Playwright and Cucumber-JS test automation scaffold for ParaBank.",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "cucumber-js",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^11.2.0",
+    "@cucumber/html-formatter": "^21.10.1",
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.15.21",
+    "dotenv": "^16.5.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}

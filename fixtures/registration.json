@@ -1,0 +1,26 @@
+{
+  "newUser": {
+    "firstName": "Codex",
+    "lastName": "Registration",
+    "address": "200 Queen Street",
+    "city": "Brisbane",
+    "state": "QLD",
+    "zip": "4000",
+    "phone": "0731111111",
+    "ssn": "987654321",
+    "username": "codex_registration",
+    "password": "TestPass123!"
+  },
+  "duplicateUser": {
+    "firstName": "Duplicate",
+    "lastName": "Registration",
+    "address": "300 Queen Street",
+    "city": "Brisbane",
+    "state": "QLD",
+    "zip": "4000",
+    "phone": "0732222222",
+    "ssn": "123456789",
+    "username": "",
+    "password": "TestPass123!"
+  }
+}

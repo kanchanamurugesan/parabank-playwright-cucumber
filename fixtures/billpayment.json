@@ -1,0 +1,22 @@
+{
+  "validPayee": {
+    "name": "Brisbane Utilities",
+    "address": "100 Queen Street",
+    "city": "Brisbane",
+    "state": "QLD",
+    "zip": "4000",
+    "phone": "0730000000",
+    "account": "123456789",
+    "amount": "50"
+  },
+  "incompletePayee": {
+    "name": "Incomplete Payee",
+    "address": "",
+    "city": "",
+    "state": "",
+    "zip": "",
+    "phone": "",
+    "account": "",
+    "amount": ""
+  }
+}
