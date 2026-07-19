@@ -1,0 +1,54 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:      # manual "Run workflow" button for the full E2E job
+  schedule:
+    - cron: "0 20 * * 0"  # weekly full run, Sunday 20:00 UTC (~6am Mon Brisbane)
+
+jobs:
+  # Always runs — keeps the badge green and meaningful.
+  # Compiles TS and verifies every Gherkin step has a bound step definition.
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Type-check
+        run: npx tsc --noEmit
+      - name: Cucumber dry run (verify step bindings)
+        run: npx cucumber-js --dry-run
+
+  # Full suite against the live ParaBank demo site.
+  # Runs only on manual trigger or the weekly schedule, because the public
+  # demo site is periodically reset / unavailable to CI runners.
+  e2e:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+      - name: Run E2E suite
+        run: npm test
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-report
+          path: |
+            reports/
+            test-results/
+          if-no-files-found: ignore
