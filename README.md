@@ -1,62 +1,50 @@
-# ParaBank Automation
+# parabank-playwright-cucumber
+![CI](https://github.com/kanchanamurugesan/parabank-playwright-cucumber/actions/workflows/test.yml/badge.svg)
 
-This project is an end-to-end test automation framework for the ParaBank demo application. It uses Playwright for browser control, Cucumber for business-readable scenarios, and TypeScript for a strict, maintainable implementation.
+BDD end-to-end automation of the [ParaBank](https://parabank.parasoft.com/) demo banking application, built with *Playwright + Cucumber (TypeScript)*. Demonstrates behaviour-driven test design: Gherkin feature files, step definitions bound to Page Objects, and hooks for browser lifecycle management.
 
-## Tech Stack
+## Stack
 
-- Node.js
-- TypeScript
-- Playwright
-- Cucumber-JS
-- GitHub Actions
+- Playwright (TypeScript) as the browser driver
+- Cucumber.js — Gherkin feature files with step definitions
+- Page Object Model
+- Hooks for setup/teardown and failure screenshots
+- GitHub Actions CI
 
-## Local Setup
+## Project structure
 
-Install dependencies and the Chromium browser:
-
-```bash
-npm ci
-npx playwright install chromium
+```
+├── .github/workflows/    # CI pipeline
+├── config/               # Environment and runner configuration
+├── features/             # Gherkin .feature files (business-readable scenarios)
+├── step-definitions/     # Step implementations binding Gherkin to Page Objects
+├── pages/                # Page Object classes
+├── fixtures/             # Shared test context
+├── hooks/                # Before/After hooks (browser lifecycle, screenshots)
+└── cucumber.js           # Cucumber profiles
 ```
 
-Create a `.env` file in the project root:
 
-```dotenv
-BASE_URL=https://parabank.parasoft.com/parabank
-USERNAME=your-username
-PASSWORD=your-password
-GLOBAL_TIMEOUT=30000
-```
+## Scenarios covered
 
-Run the test suite:
+Customer-facing ParaBank journeys written as Gherkin scenarios — registration, login, account overview, and funds transfer — with step definitions kept thin and page interactions encapsulated in Page Objects.
+
+## Run tests
 
 ```bash
+npm install
+npx playwright install
 npm test
 ```
 
-Run the TypeScript check:
 
-```bash
-npm run typecheck
-```
+## A note on CI and the demo site
 
-The HTML result is written to `reports/cucumber-report.html`. Failed scenarios retain screenshots under `reports/screenshots/` and videos under `reports/videos/`.
+ParaBank is a public demo application that is periodically reset, rate-limited, or unavailable to CI runner IPs. To keep the pipeline signal honest:
 
-## Folder Structure
+- *Every push:* CI compiles the TypeScript and runs Cucumber in dry-run mode, verifying every Gherkin step is bound to a step definition — this catches broken glue code and drift between features and steps.
+- *On demand / weekly:* the full E2E suite runs against the live demo site as a separate, manually-triggerable job, with the HTML report uploaded as a build artifact. Failures here can reflect demo-site availability rather than suite defects, which is exactly the kind of environment-dependency distinction that matters in real-world test reporting.
 
-- `features/`: Gherkin feature files grouped by business capability.
-- `step-definitions/`: Cucumber bindings and assertions.
-- `pages/`: Playwright page objects containing locators and browser actions.
-- `fixtures/`: Static test data and the custom Cucumber World.
-- `hooks/`: Browser lifecycle and failure-evidence handling.
-- `config/`: Environment and timeout configuration.
-- `helpers/`: Shared framework utilities and custom reporting.
-- `reports/`: Generated HTML reports, screenshots, and videos.
+## About
 
-## CI/CD
-
-The GitHub Actions workflow runs on pushes and pull requests to `main`. It installs Node.js 20 dependencies and Chromium, executes the Cucumber suite, fails when tests fail, and uploads the HTML report and failure screenshots as artifacts. Configure the repository variable `BASE_URL` and secrets `PARABANK_USERNAME` and `PARABANK_PASSWORD`.
-
-## Design Decisions
-
-Page Object Model keeps selectors and browser actions separate from scenario assertions, reducing duplication when the UI changes. Cucumber expresses workflows in language shared by technical and non-technical contributors. Static JSON fixtures keep reusable test data explicit and reviewable, while values that must remain secret or environment-specific stay in `.env` or CI secrets.
+Built and maintained by Kanchana Murugesan — Senior Test Analyst (Brisbane).
